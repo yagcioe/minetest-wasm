@@ -153,30 +153,37 @@ function unpack_source() {
 function getrepo() {
   local dirname="$1"
   local url="$2"
-  local rev="$3"
+  if [ ! -z ${3+x} ]; then 
+    local rev="$3"
+  fi
 
   pushd "$SOURCES_DIR"
   if [ ! -d "$dirname" ]; then
     git clone "$url" "$dirname"
     pushd "$dirname"
-    git checkout "$rev"
+    if [ ! -z ${rev+x} ]; then 
+      git checkout "$rev"
+      fi
     popd
+
   fi
   popd
 
-  pushd "$SOURCES_DIR/$dirname"
-  local oldrev=`git rev-parse HEAD`
-  if [ "$oldrev" != "$rev" ]; then
-    set +x
-    echo "---------------------------------------------------------------"
-    echo "ERROR: sources/$dirname is on wrong revision"
-    echo "--------------------------------------------------------------"
-    echo "Detected revision: $oldrev"
-    echo "Expected revision: $rev"
-    echo "---------------------------------------------------------------"
-    echo "Please pull/checkout to the correct revision, or delete repo"
-    echo "before proceeding (it will be re-cloned)"
-    exit 1
+  if [ ! -z ${rev+x} ]; then 
+    pushd "$SOURCES_DIR/$dirname"
+    local oldrev=`git rev-parse HEAD`
+    if [ "$oldrev" != "$rev" ]; then
+      set +x
+      echo "---------------------------------------------------------------"
+      echo "ERROR: sources/$dirname is on wrong revision"
+      echo "--------------------------------------------------------------"
+      echo "Detected revision: $oldrev"
+      echo "Expected revision: $rev"
+      echo "---------------------------------------------------------------"
+      echo "Please pull/checkout to the correct revision, or delete repo"
+      echo "before proceeding (it will be re-cloned)"
+      exit 1
+    fi
+    popd
   fi
-  popd
 }
