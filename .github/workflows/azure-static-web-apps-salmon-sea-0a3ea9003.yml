@@ -19,11 +19,11 @@ jobs:
         with:
           submodules: true
       - name: install commands
-        run: "apt-get install -y wget python3 git build-essential cmake tclsh zip zstd"
+        run: "sudo apt-get install -y wget python3 git build-essential cmake tclsh zip zstd"
       - name: install emsdk
-        run: "./install_emsdk.sh"
+        run: "sudo ./install_emsdk.sh"
       - name: Build
-        run: "./build_all.sh"
+        run: "sudo ./build_all.sh"
         shell: bash
       - name: Deploy
         id: builddeploy
