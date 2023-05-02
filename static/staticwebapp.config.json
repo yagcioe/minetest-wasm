@@ -12,6 +12,12 @@
             }
         },
         {
+            "route": "/%__RELEASE_UUID__%/packs/*",
+            "headers": {
+                "Access-Control-Allow-Origin": "*"
+            }
+        },
+        {
             "route": "/%__RELEASE_UUID__%/*",
             "headers": {
                 "Cross-Origin-Embedder-Policy": "require-corp",
@@ -19,11 +25,5 @@
                 "Cache-Control": "public, max-age=31536000, immutable"
             }
         },
-        {
-            "route": "/%__RELEASE_UUID__%/packs/*",
-            "headers": {
-                "Access-Control-Allow-Origin": "*"
-            }
-        }
     ]
 }
