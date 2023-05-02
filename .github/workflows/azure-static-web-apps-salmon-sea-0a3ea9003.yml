@@ -30,7 +30,7 @@ jobs:
         env:
           cache-name: cache-minetest-build
         with:
-          path: ~/build
+          path: build
           key: ${{ runner.os }}-build-${{ env.cache-name }}
 
       - if: ${{ steps.cache-minetest-build.outputs.cache-hit != 'true' }}
