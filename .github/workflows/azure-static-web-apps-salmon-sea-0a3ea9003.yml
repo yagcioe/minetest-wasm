@@ -43,6 +43,9 @@ jobs:
         run: "sudo ./build_www.sh"
         shell: bash
 
+      - name: show dir
+        run: "ls -l"
+
       - name: Deploy
         id: builddeploy
         uses: Azure/static-web-apps-deploy@v1
