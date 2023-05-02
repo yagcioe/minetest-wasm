@@ -50,6 +50,7 @@ apply_substitutions index.html  "$WWW_DIR"/index.html
 apply_substitutions htaccess_release "$RELEASE_DIR"/.htaccess
 apply_substitutions launcher.js "$RELEASE_DIR"/launcher.js
 apply_substitutions htaccess_packs "$PACKS_DIR"/.htaccess
+apply_substitutions staticwebapp.config.json "$WWW_DIR"/staticwebapp.config.json
 popd
 
 # Copy base file system pack
