@@ -18,13 +18,31 @@ jobs:
       - uses: actions/checkout@v3
         with:
           submodules: true
+
       - name: install commands
         run: "sudo apt-get install -y wget python3 git build-essential cmake tclsh zip zstd"
+
       - name: install emsdk
         run: "sudo ./install_emsdk.sh"
-      - name: Build
+
+      - name: Cache build
+        uses: actions/cache@v3
+        env:
+          cache-name: cache-minetest-build
+        with:
+          path: /build
+          key: ${{ runner.os }}-build-${{ env.cache-name }}
+
+      - if: ${{ steps.cache-minetest-build.outputs.cache-hit != 'true' }}
+        name: Build all
         run: "sudo ./build_all.sh"
         shell: bash
+      
+      - if: ${{ steps.cache-minetest-build.outputs.cache-hit == 'true' }}
+        name: Build www
+        run: "sudo ./build_www.sh"
+        shell: bash
+
       - name: Deploy
         id: builddeploy
         uses: Azure/static-web-apps-deploy@v1
