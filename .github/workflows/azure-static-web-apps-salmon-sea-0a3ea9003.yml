@@ -39,7 +39,7 @@ jobs:
         run: "sudo ./build_all.sh"
         shell: bash
       
-      - if: ${{ steps.cache-minetest-build.outputs.cache-hit == 'true' }}
+      - if: ${{ steps.cache-build.outputs.cache-hit == 'true' }}
         name: Build www
         run: "sudo ./build_www.sh"
         shell: bash
