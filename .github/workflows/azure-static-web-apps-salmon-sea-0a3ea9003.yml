@@ -26,6 +26,7 @@ jobs:
         run: "sudo ./install_emsdk.sh"
 
       - name: Cache build
+        id: cache-build
         uses: actions/cache@v3
         env:
           cache-name: cache-minetest-build
@@ -33,7 +34,7 @@ jobs:
           path: build
           key: ${{ runner.os }}-build-${{ env.cache-name }}
 
-      - if: ${{ steps.cache-minetest-build.outputs.cache-hit != 'true' }}
+      - if: ${{ steps.cache-build.outputs.cache-hit != 'true' }}
         name: Build all
         run: "sudo ./build_all.sh"
         shell: bash
