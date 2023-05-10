@@ -8,10 +8,12 @@ on:
     types: [opened, synchronize, reopened, closed]
     branches:
       - main
+  repository_dispatch:
+    types: [push]
 
 jobs:
   build_and_deploy_job:
-    if: github.event_name == 'push' || (github.event_name == 'pull_request' && github.event.action != 'closed')
+    if: github.event_name == 'repository_dispatch' || github.event_name == 'push' || (github.event_name == 'pull_request' && github.event.action != 'closed')
     runs-on: ubuntu-latest
     name: Build and Deploy Job
     steps:
@@ -26,19 +28,20 @@ jobs:
         run: "sudo ./install_emsdk.sh"
 
       - name: Cache build
+        id: cache-build
         uses: actions/cache@v3
         env:
           cache-name: cache-minetest-build
         with:
-          path: ~/build
+          path: build
           key: ${{ runner.os }}-build-${{ env.cache-name }}
 
-      - if: ${{ steps.cache-minetest-build.outputs.cache-hit != 'true' }}
+      - if: ${{ steps.cache-build.outputs.cache-hit != 'true' }}
         name: Build all
         run: "sudo ./build_all.sh"
         shell: bash
       
-      - if: ${{ steps.cache-minetest-build.outputs.cache-hit == 'true' }}
+      - if: ${{ steps.cache-build.outputs.cache-hit == 'true' }}
         name: Build www
         run: "sudo ./build_www.sh"
         shell: bash
