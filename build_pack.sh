@@ -15,15 +15,25 @@ function buildPacks() {
     pushd $pack
         
     pack_name=$(basename $pack)
-
+    pathsToArchive=''
     if [ -d minetest/games ]; then
-        if [ -d minetest/worlds ]; then
-            tar -cf "$pack_name.tzst" minetest/games minetest/worlds --use-compress-program=zstd
-        else
-            tar -cf "$pack_name.tzst" minetest/games --use-compress-program=zstd
-        fi
-        #tar -xf "$packname.tzst" --use-compress-program=unzstd # to unpack
-        mv "$pack_name.tzst" $PACKS_DIR/$pack_name.pack
+      pathsToArchive+="minetest/games "
+    fi
+    if [ -d minetest/worlds ]; then
+      pathsToArchive+="minetest/worlds "
+    fi
+    if [ -f minetest/builtin/game/chat.lua ]; then
+      pathsToArchive+="minetest/builtin/game/chat.lua "
+    fi
+    if [ -f minetest/builtin/game/item.lua ]; then
+      pathsToArchive+="minetest/builtin/game/item.lua "
+    fi
+
+    if [ ! -z "$pathsToArchive" ]; then
+      echo add pack
+      tar -cf "$pack_name.tzst" $pathsToArchive --use-compress-program=zstd
+      #tar -xf "$packname.tzst" --use-compress-program=unzstd # to unpack
+      mv "$pack_name.tzst" $PACKS_DIR/$pack_name.pack
     fi
 
     popd
