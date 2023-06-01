@@ -28,6 +28,10 @@ function buildPacks() {
     if [ -f minetest/builtin/game/item.lua ]; then
       pathsToArchive+="minetest/builtin/game/item.lua "
     fi
+      if [ -f minetest/minetest.prod.conf ]; then
+      mv -f ~/minetest/minetest.prod.conf ~/minetest/minetest.conf
+      pathsToArchive+="minetest/minetest.conf "
+    fi
 
     if [ ! -z "$pathsToArchive" ]; then
       echo add pack
