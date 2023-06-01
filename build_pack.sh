@@ -29,7 +29,7 @@ function buildPacks() {
       pathsToArchive+="minetest/builtin/game/item.lua "
     fi
       if [ -f minetest/minetest.prod.conf ]; then
-      mv -f ~/minetest/minetest.prod.conf ~/minetest/minetest.conf
+      mv -f minetest/minetest.prod.conf minetest/minetest.conf
       pathsToArchive+="minetest/minetest.conf "
     fi
 
